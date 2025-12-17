@@ -13,14 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize simple image mapping (placeholders for now)
   const imageMap = {
-    'adventure_start': '🌟',
-    'forest_squirrel': '🌳🐿️',
-    'space_robot': '🚀🤖',
-    'squirrel_happy': '🌰😊',
-    'sad_moment': '😢',
-    'robot_home': '🏠⭐',
-    'lonely_robot': '😔',
-    'chocolate_palace': '🍫🏰'
+    'intro_dana': '🧙‍♀️📚',
+    'crystal_info': '🔮✨',
+    'crossroad': '🛤️🤔',
+
+    // Jungle Path
+    'jungle_math': '🌳🐒',
+    'monkey_wrong': '🐒❌',
+    'monkey_happy': '🐒🔑',
+    'geometry_chest': '📦❓',
+    'chest_locked': '🔒🛑',
+    'crystal_piece_1': '💎✨',
+
+    // Space Path
+    'space_lab': '🚀🧪',
+    'earth_view': '🌍👀',
+    'crystal_piece_2': '🪐💎',
+    'sun_heat': '☀️🔥',
+    'science_badge': '🎖️👨‍🔬',
+    'sun_sad': '☀️😢',
+
+    // Ocean Path
+    'ocean_intro': '🌊🐙',
+    'ocean_cleanup': '🧹🚮',
+    'ocean_trash': '⚠️🥤',
+    'nature_warning': '🚫🐠',
+    'crystal_piece_3': '💖🐙',
+
+    // End
+    'grand_master': '🏆👑🎉'
   };
 
   const appElement = document.getElementById('app');
