@@ -1,41 +1,55 @@
-name: Deploy to GitHub Pages
+name: Build, Deploy and Release (Tags Only)
 
 on:
   push:
-    branches: ["main"] # فقط وقتی روی برنچ اصلی پوش کردید اجرا شود
+    tags:
+      - 'v*' # فقط زمانی اجرا می‌شود که تگی با حرف v شروع شود (مثل v1.0.2)
 
-# دسترسی‌های لازم برای انتشار روی GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 jobs:
-  build_and_deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20.x
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 20
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build project
-        run: npm run build # اینجا پوشه dist ساخته می‌شود
+        run: npm run build # تولید پوشه dist
 
-      # گام مهم: آپلود محتویات پوشه dist برای انتشار
-      - name: Upload artifact
+      # ۱. آپلود و انتشار روی GitHub Pages
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # اگر نام پوشه بیلد شما چیزی غیر از dist است، اینجا را تغییر دهید
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # ۲. فشرده‌سازی و ایجاد Release در گیت‌هاب
+      - name: Zip Build Files
+        run: zip -r build-assets.zip dist/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build-assets.zip
+          name: Release ${{ github.ref_name }}
+          body: "نسخه جدید سایت در تاریخ ${{ github.event.head_commit.timestamp }} منتشر شد."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
