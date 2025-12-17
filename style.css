@@ -2,10 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
 
 :root {
-  --primary-color: #FF9F1C; /* Orange */
-  --secondary-color: #2EC4B6; /* Teal */
-  --bg-color: #CBF3F0; /* Light Blue */
-  --text-color: #2B2D42; /* Dark Gray */
+  --primary-color: #FF9F1C;
+  /* Orange */
+  --secondary-color: #2EC4B6;
+  /* Teal */
+  --bg-color: #CBF3F0;
+  /* Light Blue */
+  --text-color: #2B2D42;
+  /* Dark Gray */
   --card-bg: #FFFFFF;
   --font-family: 'Vazirmatn', sans-serif;
 }
@@ -19,8 +23,11 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  direction: rtl; /* Right-to-Left for Persian */
-  overflow: hidden; /* Prevent scroll on some devices if content fits */
+  direction: rtl;
+  /* Right-to-Left for Persian */
+  /* Allow scrolling if content is taller than viewport */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #app {
@@ -28,6 +35,8 @@ body {
   max-width: 500px;
   padding: 20px;
   box-sizing: border-box;
+  /* Ensure some margin on top/bottom for scrolling on small screens */
+  margin: 20px 0;
 }
 
 /* Story Card */
@@ -41,26 +50,33 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative;
+  overflow: hidden;
+  /* For rounded corners */
 }
 
 .story-image {
   width: 100%;
-  height: 200px; /* Placeholder height */
+  aspect-ratio: 16 / 9;
+  /* Maintain aspect ratio */
   background-color: #FFBF69;
   border-radius: 16px;
   object-fit: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  /* Fluid icon size */
   color: #fff;
 }
 
 .story-text {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  /* Fluid text size */
   color: var(--text-color);
   line-height: 1.6;
   font-weight: 700;
+  margin: 0;
 }
 
 /* Choices Buttons */
@@ -68,6 +84,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: auto;
+  /* Push buttons to bottom if space permits */
 }
 
 .choice-btn {
@@ -77,11 +95,14 @@ body {
   padding: 16px;
   border-radius: 16px;
   font-family: var(--font-family);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 0 #259d91; /* 3D effect */
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 0 #259d91;
+  /* 3D effect */
+  touch-action: manipulation;
+  /* Eliminate 300ms tap delay */
 }
 
 .choice-btn:active {
@@ -89,17 +110,45 @@ body {
   box-shadow: none;
 }
 
+.choice-btn:hover {
+  background-color: #27a69a;
+}
+
 /* Animations */
 @keyframes popIn {
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.9) translateY(20px);
   }
+
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-/* Telegram Specific Adjustments usually handled via ThemeParams, 
-   but we set defaults for standalone. */
+/* Small Screen Optimizations */
+@media (max-width: 380px) {
+  #app {
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  .story-card {
+    padding: 16px;
+    gap: 16px;
+    border-radius: 20px;
+  }
+
+  .choice-btn {
+    padding: 14px;
+    border-radius: 12px;
+  }
+}
+
+/* Ensure the app fills height nicely on taller screens but stays centered */
+@media (min-height: 800px) {
+  #app {
+    margin: 0;
+  }
+}
